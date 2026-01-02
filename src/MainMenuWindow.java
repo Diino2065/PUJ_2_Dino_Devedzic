@@ -43,8 +43,30 @@ public class MainMenuWindow extends JFrame {
         buttonPanel.add(toDo);
 
 
+
+
         add(buttonPanel, BorderLayout.CENTER);
         setVisible(true);
+
+      profile.addActionListener(e -> {
+            new ProfileWindow(username, role);
+
+        });
+
+
+        addRemoveUsers.addActionListener(e -> {
+            if (!role.equals("Admin")) {
+                JOptionPane.showMessageDialog(this, "Access Denied: This is an admin function", "Access Denied", JOptionPane.ERROR_MESSAGE);
+            } else {
+                new UserManagementWindow();
+            }
+        });
+
+        financeTracker.addActionListener(e -> {
+            new FinanceTrackerWindow(username);
+        });
+
+
     }
 
     private JPanel createNavbar(String username, String role) {
@@ -58,13 +80,27 @@ public class MainMenuWindow extends JFrame {
         greetingLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
         JButton homeBtn = new JButton("Home");
+        homeBtn.addActionListener(e -> {
+            new MainMenuWindow(username, role);
+            dispose();
+        });
         JButton usersBtn = new JButton("Users");
+        usersBtn.addActionListener(e -> {
+            if (!role.equals("Admin")) {
+                JOptionPane.showMessageDialog(this, "Access Denied: This is an admin function", "Access Denied", JOptionPane.ERROR_MESSAGE);
+            } else {
+                new Users();
+
+            }
+        });
         JButton logoutBtn = new JButton("Logout");
 
         logoutBtn.addActionListener(e -> {
             dispose(); // zatvara  prozor main menu
             new LoginWindow();
         });
+
+
 
         styleNavButton(homeBtn);
         styleNavButton(usersBtn);

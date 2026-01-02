@@ -30,4 +30,8 @@ public class MongoDBConnection {
             System.out.println("Database  and collection created.");
         }
     }
+    public static MongoDatabase getDatabase() {
+        MongoClient client = MongoClients.create(URI);
+        return client.getDatabase(DATABASE_NAME);
+    }
 }
