@@ -1,3 +1,4 @@
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -6,6 +7,8 @@ import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
+
+
 
 public class LoginWindow extends Component {
     private JTextField TxtUsername;
@@ -18,12 +21,10 @@ public class LoginWindow extends Component {
     public LoginWindow() {
 
 
-
         loginButton.addActionListener(e -> {
             String username = TxtUsername.getText().trim();
             String password = new String(txtPassword.getPassword()).trim();
             String selectedRole = roleComboBox.getSelectedItem().toString();
-
 
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
@@ -34,14 +35,11 @@ public class LoginWindow extends Component {
             }
 
             try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-
                 MongoDatabase db = mongoClient.getDatabase("PUJ2DB");
                 MongoCollection<Document> users = db.getCollection("users");
 
-                Document user = users.find(
-                        new Document("username", username)
-                                .append("password", password)
-                ).first();
+                Document user = users.find(new Document("username", username)
+                        .append("password", password)).first();
 
                 if (user == null) {
                     JOptionPane.showMessageDialog(this,
@@ -51,28 +49,23 @@ public class LoginWindow extends Component {
                     return;
                 }
 
-                String dbRole = user.getString("role");
-                boolean active = user.getBoolean("active", false);
-
-                if (!dbRole.equalsIgnoreCase(selectedRole)) {
-                    JOptionPane.showMessageDialog(this,
-                            "Selected role does not match your account.",
-                            "Access Denied",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-
-
-
+                String role = user.getString("role");
 
                 JOptionPane.showMessageDialog(this,
                         "Welcome " + username,
                         "Login Successful",
                         JOptionPane.INFORMATION_MESSAGE);
 
-               // new edu.gui.MainMenuWindow(username, dbRole);
-               // dispose();  ovdje ide main menu
+
+
+               //checka top frame da zatvori login prozor
+                new MainMenuWindow(username, role);
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                if (topFrame != null) {
+                    topFrame.dispose();
+                }
+
+
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -84,8 +77,6 @@ public class LoginWindow extends Component {
         });
 
 
-
-       // setVisible(true);
         registerButton.addActionListener(e -> {
             JFrame registerFrame = new JFrame("Register");
             RegisterWindow registerWindow = new RegisterWindow();
@@ -94,8 +85,5 @@ public class LoginWindow extends Component {
             registerFrame.setSize(450, 400);
             registerFrame.setVisible(true);
         });
-
-
     }
-
 }
