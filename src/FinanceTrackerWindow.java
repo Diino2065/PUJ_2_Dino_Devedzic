@@ -29,7 +29,7 @@ public class FinanceTrackerWindow {
 
 
     public FinanceTrackerWindow(String username) {
-        JFrame frame = new JFrame("Finance Tracker");
+        JFrame frame = new JFrame("Finance Tracker "+ username);
         frame.setContentPane(mainPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);

@@ -23,14 +23,14 @@ public class Users {
     public Users() {
         JFrame frame = new JFrame("Users");
         frame.setContentPane(this.UsersPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
 
         // incijalizacij tabele
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("Username");
         tableModel.addColumn("Role");
-        tableModel.addColumn("Bio");
+      //  tableModel.addColumn("Bio");
 
         // fetch korisnika
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
@@ -42,7 +42,7 @@ public class Users {
                 tableModel.addRow(new Object[]{
                         user.getString("username"),
                         user.getString("role"),
-                        user.getString("bio")
+                       // user.getString("bio")
                 });
             }
         } catch (Exception ex) {
